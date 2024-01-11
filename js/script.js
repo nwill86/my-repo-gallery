@@ -1,10 +1,14 @@
 // Div overview (profile information)
 const overviewElement = document.querySelector(".overview");
+const username = "nwill86";
 const repoListElement = document.querySelector(".repo-list");
 const reposElement = document.querySelector(".repos");
 const repoDataElement = document.querySelector(".repo-data");
+const backButton = document.querySelector(".view-repos");
+const filterInput = document.querySelector(".filter-repos");
 
-const username = "nwill86";
+
+
 
 const gitUserData = async function () {
     const userData = await fetch(`https://api.github.com/users/${username}`);
@@ -31,13 +35,13 @@ const showUserInfo = function (data) {
 };
 
 const gitUserRepos = async function () {
-    const repos = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
-    const repoData = await repos.json();
+    const fetchRepos = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
+    const repoData = await fetchRepos.json();
     showUserRepos(repoData);
-}
+};
 
 const showUserRepos = function (repos) {
-    for (let repo of repos) {
+    for (const repo of repos) {
         const repoListItem = document.createElement("li");
         repoListItem.classList.add("repo");
         repoListItem.innerHTML = `<h3>${repo.name}</h3>`;
@@ -52,6 +56,7 @@ repoListElement.addEventListener("click", function (e) {
     }
 });
 
+
 const getRepoInfo = async function (repoName) {
     const fetchInfo = await fetch(`https://api.github.com/repos/${username}/${repoName}`);
     const repoInfo = await fetchInfo.json();
@@ -62,12 +67,15 @@ const getRepoInfo = async function (repoName) {
     console.log(languageData);
 
     const languages = [];
-    for (let language in languageData) {
+    for (const language in languageData) {
         languages.push(language);
     }
+
+    displayRepoInfo(repoInfo, languages);
 };
 
 const displayRepoInfo = function (repoInfo, languages) {
+    backButton.classList.remove("hide");
     repoDataElement.innerHTML = "";
     repoDataElement.classList.remove("hide");
     reposElement.classList.add("hide");
@@ -80,3 +88,5 @@ const displayRepoInfo = function (repoInfo, languages) {
 
     repoDataElement.append(div);
 };
+
+
