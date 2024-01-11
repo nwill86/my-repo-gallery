@@ -41,6 +41,7 @@ const gitUserRepos = async function () {
 };
 
 const showUserRepos = function (repos) {
+    filterInput.classList.remove("hide");
     for (const repo of repos) {
         const repoListItem = document.createElement("li");
         repoListItem.classList.add("repo");
@@ -53,6 +54,8 @@ repoListElement.addEventListener("click", function (e) {
     if (e.target.matches("h3")) {
         const repoName = e.target.innerText;
         getRepoInfo(repoName);
+        
+
     }
 });
 
@@ -89,4 +92,18 @@ const displayRepoInfo = function (repoInfo, languages) {
     repoDataElement.append(div);
 };
 
+filterInput.addEventListener("input", function (e) {
+    const searchText = e.target.value;
+   console.log(searchText);
+    const repos = document.querySelectorAll(".repo");
+    const searchLowerText = searchText.toLowerCase();
 
+    for (const repo of repos) {
+        const repoLowerText = repo.innerText.toLowerCase();
+        if (repoLowerText.includes(searchLowerText)) {
+            repo.classList.remove("hide");
+        } else {
+            repo.classList.add("hide");
+        }
+    }
+});
